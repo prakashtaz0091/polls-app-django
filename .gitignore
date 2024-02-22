@@ -1,0 +1,39 @@
+# Byte-compiled / optimized Python files
+*.pyc
+__pycache__/
+
+# Django development settings
+*.log
+*.pot
+*.pyc
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Static files (usually collected by Django's `collectstatic` management command)
+/staticfiles/
+
+# Virtual environment
+venv/
+.env
+
+# IDE files
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# macOS system files
+.DS_Store
+
+# Temporary files
+*.swp
+*~
+
+# Secret key file
+*.key
+
+# Ignore migration files if you're not versioning them
+# Uncomment if not versioning migrations
+# */migrations/*.py
+# */migrations/*.pyc
