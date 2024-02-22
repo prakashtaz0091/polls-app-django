@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voting App</title>
+  </head>
+  <body>
+    <h1>{{question.question_text}}</h1>
+    <p>published at: {{question.pub_date}}</p>
+    <ul>
+        {% for choice in question.choice_set.all %}
+            <li><h5>{{choice.choice_text}}</h5> <span>ratings: {{choice.votes}}</span> </li>
+        {% endfor %}
+    </ul>
+  </body>
+</html>
