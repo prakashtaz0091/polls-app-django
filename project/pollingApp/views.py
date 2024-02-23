@@ -5,7 +5,7 @@ from django.views import generic
 from django.db.models import F
 from .models import Choice, Question
 from django.utils import timezone
-
+from django.contrib import messages
 
 class IndexView(generic.ListView):
     template_name = "pollingApp/index.html"
@@ -47,21 +47,12 @@ def vote(request, question_id):
                 "error_message": "You didn't select a choice.",
             },
         )
-    # else:
-    #     selected_choice.votes = F("votes") + 1
-    #     selected_choice.save()
-    #     response = HttpResponseRedirect(reverse("pollingApp:results", args=(question.id,)))
-
-    #     # Add cache control headers to prevent caching
-    #     response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    #     response['Pragma'] = 'no-cache'
-    #     response['Expires'] = '0'
-        
-    #     return response
+    
     else:
         if request.session.get('has_voted_%s' % question_id, False):
             # User has already voted
-            return HttpResponse("You have already voted.")
+            messages.warning(request, f"""You have successfully voted in "{selected_choice.choice_text}" for "{question.question_text}" """)
+            return HttpResponseRedirect(reverse("pollingApp:index"))
         
         # Increment the vote count
         selected_choice.votes = F("votes") + 1

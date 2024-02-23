@@ -6,6 +6,17 @@
     <title>Voting App</title>
   </head>
   <body>
+
+    <!-- Display messages -->
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
     {% if latest_question_list %}
     <ul>
       {% for question in latest_question_list %}
