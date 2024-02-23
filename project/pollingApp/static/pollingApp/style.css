@@ -1,0 +1,83 @@
+li a {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+* {
+  --primary: #2c5f2d;
+  --secondary: #97bc62;
+}
+/* body {
+  background: white url("images/back.webp") no-repeat;
+  background-size: cover;
+} */
+html,
+body {
+  background-color: var(
+    --secondary
+  ); /* Ensure that html and body elements have a defined 
+  height */
+  color: var(--primary);
+}
+.quote {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 0.8;
+  text-shadow: 0px -2px 3px rgba(0, 0, 0, 0.55);
+  font-family: "Kdam Thmor Pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 2rem;
+}
+.metrics {
+  display: flex;
+  justify-content: center;
+}
+.metric {
+  height: 200px;
+  width: 20vw;
+  margin: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 3;
+  text-align: center;
+  /* background-color: #2c5f2d; */
+  box-shadow: 0px -2px 7px 0px rgba(0, 0, 0, 0.31);
+  -webkit-box-shadow: 0px -2px 7px 0px rgba(0, 0, 0, 0.31);
+  -moz-box-shadow: 0px -2px 7px 0px rgba(0, 0, 0, 0.31);
+}
+
+.question-section {
+  margin-top: 10vh;
+  width: 80vw;
+  /* background-color: blue; */
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.messages {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 999;
+}

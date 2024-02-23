@@ -14,6 +14,13 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_questions'] = Question.total_questions()
+        context['total_votes'] = Choice.total_votes()
+        return context
 
 
 class DetailView(generic.DetailView):
@@ -51,8 +58,10 @@ def vote(request, question_id):
     else:
         if request.session.get('has_voted_%s' % question_id, False):
             # User has already voted
-            messages.warning(request, f"""You have successfully voted in "{selected_choice.choice_text}" for "{question.question_text}" """)
-            return HttpResponseRedirect(reverse("pollingApp:index"))
+            messages.warning(request, "You have already voted for this question.")
+        else:
+            # User is voting for the first time
+            messages.success(request, f"You have successfully voted for '{selected_choice.choice_text}' in '{question.question_text}'.")
         
         # Increment the vote count
         selected_choice.votes = F("votes") + 1
@@ -62,7 +71,7 @@ def vote(request, question_id):
         request.session['has_voted_%s' % question_id] = True
         
         # Redirect to the results page
-        return HttpResponseRedirect(reverse("pollingApp:results", args=(question.id,)))
+        return HttpResponseRedirect(reverse("pollingApp:index"))
 
 
 

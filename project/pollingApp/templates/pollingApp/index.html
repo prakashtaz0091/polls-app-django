@@ -1,32 +1,62 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Voting App</title>
+    <link rel="stylesheet" href="{% static "pollingApp/style.css" %}">
+    <!-- google fonts  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <div class="main-wrapper">
+      <div class="hero-section">
+        <h1>Voting Application</h1>
+        <span class="quote">Your valuable decision</span>
 
-    <!-- Display messages -->
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
+        <br>
+        <br>
+        <div class="metrics">
+          <div class="metric">Questions <br>{{total_questions}}</div>
+          <div class="metric">Votes <br>{{total_votes}}</div>
+        </div>
+      </div>
+    
+
+      <div class="messages">
+              <!-- Display messages -->
+          {% if messages %}
+          <ul>
+              {% for message in messages %}
+                  <li>{{ message }}</li>
+              {% endfor %}
+          </ul>
+        {% endif %} 
+      </div>
+
+
+
+      <section class="question-section">
+        <h2>Queries of the day</h2>
+        {% if latest_question_list %}
+          <ul class="question-list">
+            {% for question in latest_question_list %}
+            <li class="question">
+              <a href="{% url "pollingApp:detail" question.id %}">{{ question.question_text }}</a>
+              
+            </li>
             {% endfor %}
-        </ul>
-    {% endif %}
-
-
-    {% if latest_question_list %}
-    <ul>
-      {% for question in latest_question_list %}
-      <li>
-        <a href="{% url "pollingApp:detail" question.id %}">{{ question.question_text }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>No polls are available.</p>
-    {% endif %}
+          </ul>
+        {% else %}
+          <p>No polls are available.</p>
+        {% endif %} 
+      </section>
+    </div>
   </body>
 </html>

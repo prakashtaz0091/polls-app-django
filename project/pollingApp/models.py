@@ -15,6 +15,11 @@ class Question(models.Model):
     def was_published_recently(self):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
+    
+
+    @classmethod
+    def total_questions(cls):
+        return cls.objects.count()
 
 
 class Choice(models.Model):
@@ -24,3 +29,8 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+    
+    @classmethod
+    def total_votes(cls):
+        return cls.objects.aggregate(total_votes=models.Sum('votes'))['total_votes'] or 0
