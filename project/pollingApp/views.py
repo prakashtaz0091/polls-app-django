@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
@@ -17,8 +17,14 @@ class IndexView(generic.ListView):
 
 
 class DetailView(generic.DetailView):
-    model = Question
-    template_name = "pollingApp/detail.html"
+    model=Question
+    template_name="pollingApp/detail.html"
+
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):
@@ -41,10 +47,31 @@ def vote(request, question_id):
                 "error_message": "You didn't select a choice.",
             },
         )
+    # else:
+    #     selected_choice.votes = F("votes") + 1
+    #     selected_choice.save()
+    #     response = HttpResponseRedirect(reverse("pollingApp:results", args=(question.id,)))
+
+    #     # Add cache control headers to prevent caching
+    #     response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    #     response['Pragma'] = 'no-cache'
+    #     response['Expires'] = '0'
+        
+    #     return response
     else:
+        if request.session.get('has_voted_%s' % question_id, False):
+            # User has already voted
+            return HttpResponse("You have already voted.")
+        
+        # Increment the vote count
         selected_choice.votes = F("votes") + 1
         selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
+        
+        # Set session variable to indicate that the user has voted
+        request.session['has_voted_%s' % question_id] = True
+        
+        # Redirect to the results page
         return HttpResponseRedirect(reverse("pollingApp:results", args=(question.id,)))
+
+
+

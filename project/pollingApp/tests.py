@@ -54,7 +54,7 @@ class QuestionIndexViewTests(TestCase):
 
 
     def test_past_question(self):
-        question = create_question(question_text="Past question.")
+        question = create_question(question_text="Past question.", days=-30)
         response = self.client.get(reverse("pollingApp:index"))
         self.assertQuerysetEqual(response.context["latest_question_list"],[question])
 
@@ -62,7 +62,7 @@ class QuestionIndexViewTests(TestCase):
     def test_future_question(self):
         create_question(question_text="future question.",days=30)
         response = self.client.get(reverse("pollingApp:index"))
-        self.assertContains(response,"No polls are availabe.")
+        self.assertContains(response,"No polls are available.")
         self.assertQuerysetEqual(response.context["latest_question_list"],[])   
 
 
@@ -78,3 +78,32 @@ class QuestionIndexViewTests(TestCase):
         question2=create_question(question_text="Past question 2.", days=-5)
         response=self.client.get(reverse("pollingApp:index"))
         self.assertQuerysetEqual(response.context["latest_question_list"],[question2,question1])    
+
+
+
+class DetailViewTest(TestCase):
+    def setUp(self):
+        # Create a question with pub_date in the past
+        self.past_question = Question.objects.create(
+            question_text="Past question.", 
+            pub_date=timezone.now() - timezone.timedelta(days=1)
+        )
+        # Create a question with pub_date in the future
+        self.future_question = Question.objects.create(
+            question_text="Future question.", 
+            pub_date=timezone.now() + timezone.timedelta(days=1)
+        )
+
+    def test_get_queryset(self):
+        """
+        Test that get_queryset() excludes future questions.
+        """
+        # Simulate a request to the view for the past question
+        response = self.client.get(reverse('pollingApp:detail', args=(self.past_question.id,)))
+        
+        # Verify that the past question is in the response context
+        self.assertEqual(response.context['question'], self.past_question)
+        
+        # Verify that the future question is not in the response context
+        self.assertNotEqual(response.context['question'], self.future_question)
+
