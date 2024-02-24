@@ -34,3 +34,13 @@ class Choice(models.Model):
     @classmethod
     def total_votes(cls):
         return cls.objects.aggregate(total_votes=models.Sum('votes'))['total_votes'] or 0
+
+
+    @property
+    def percentage_of_votes(self):
+        total_votes = self.question.choice_set.aggregate(total_votes=models.Sum('votes'))['total_votes'] or 0
+        if total_votes == 0:
+            return 0
+        else:
+            percentage = (self.votes / total_votes) * 100
+            return round(percentage, 1)  

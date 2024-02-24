@@ -1,29 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Voting App</title>
-  </head>
-  <body>
-    <form action="{% url 'pollingApp:vote' question.id %}" method="post">
-      {% csrf_token %}
-      <fieldset>
-        <legend><h1>{{ question.question_text }}</h1></legend>
-        {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-        {% endif %} {% for choice in question.choice_set.all %}
-        <input
-          type="radio"
-          name="choice"
-          id="choice{{ forloop.counter }}"
-          value="{{ choice.id }}"
-        />
-        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label
-        ><br />
-        {% endfor %}
-      </fieldset>
-      <input type="submit" value="Vote" />
-    </form>
-  </body>
-</html>
+{% extends "pollingApp/base.html" %} {% block links %}<link
+  rel="stylesheet"
+  href="https://www.w3schools.com/w3css/4/w3.css"
+/>
+{% endblock links %} {% block content %}
+<form
+  class="detail-form"
+  action="{% url 'pollingApp:vote' question.id %}"
+  method="post"
+>
+  {% csrf_token %}
+  <fieldset>
+    <legend>
+      <h1 class="question-heading">{{ question.question_text }}</h1>
+    </legend>
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% endif %} {% for choice in choices %}
+    <input
+      type="radio"
+      name="choice"
+      id="choice{{ forloop.counter }}"
+      value="{{ choice.id }}"
+    />
+    <label id="question" for="choice{{ forloop.counter }}">
+      {{ choice.choice_text }}
+    </label>
+    <div class="w3-light-grey w3-round">
+      <div
+        class="w3-container w3-round primary-bg-color"
+        style="width:{{ choice.percentage_of_votes }}%"
+      >
+        {{ choice.percentage_of_votes }}%
+      </div>
+    </div>
+    <br /><br />
+    {% endfor %}
+  </fieldset>
+  <input class="submit-btn" type="submit" value="Vote" />
+</form>
+{% endblock content %}

@@ -32,11 +32,15 @@ class DetailView(generic.DetailView):
         Excludes any questions that aren't published yet.
         """
         return Question.objects.filter(pub_date__lte=timezone.now())
+    
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        question = self.get_object()
+        choices = question.choice_set.all().order_by('-votes')
+        context['choices'] = choices
+        return context
 
-class ResultsView(generic.DetailView):
-    model = Question
-    template_name = "pollingApp/results.html"
 
 
 
@@ -63,13 +67,13 @@ def vote(request, question_id):
             # User is voting for the first time
             messages.success(request, f"You have successfully voted for '{selected_choice.choice_text}' in '{question.question_text}'.")
         
-        # Increment the vote count
-        selected_choice.votes = F("votes") + 1
-        selected_choice.save()
-        
-        # Set session variable to indicate that the user has voted
-        request.session['has_voted_%s' % question_id] = True
-        
+            # Increment the vote count
+            selected_choice.votes = F("votes") + 1
+            selected_choice.save()
+            
+            # Set session variable to indicate that the user has voted
+            request.session['has_voted_%s' % question_id] = True
+            
         # Redirect to the results page
         return HttpResponseRedirect(reverse("pollingApp:index"))
 

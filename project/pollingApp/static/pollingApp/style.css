@@ -81,3 +81,102 @@ body {
   right: 10px;
   z-index: 999;
 }
+
+/* detail page */
+
+.submit-btn:hover {
+  background-color: var(--primary);
+  color: var(--secondary);
+}
+
+fieldset {
+  border: none;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: 0px 3px 7px -2px rgba(0, 0, 0, 0.32);
+  -webkit-box-shadow: 0px 3px 7px -2px rgba(0, 0, 0, 0.32);
+  -moz-box-shadow: 0px 3px 7px -2px rgba(0, 0, 0, 0.32);
+}
+
+.detail-form {
+  width: 80vw;
+  margin: auto;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-btn {
+  padding: 10px;
+  background-color: var(--secondary);
+  margin: 10px 20px;
+  width: 75vw;
+  border: none;
+  box-shadow: 0px 3px 7px -2px rgba(0, 0, 0, 0.32);
+  -webkit-box-shadow: 0px 3px 7px -2px rgba(0, 0, 0, 0.32);
+  -moz-box-shadow: 0px 3px 7px -2px rgba(0, 0, 0, 0.32);
+  font-size: 1.2rem;
+  font-weight: bolder;
+  color: var(--primary);
+}
+
+.detail-form #question {
+  font-weight: bold;
+  font-size: large;
+  margin: 3px;
+}
+
+.detail-form .question-heading {
+  font-family: "Kdam Thmor Pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 2rem;
+}
+
+.primary-bg-color {
+  background-color: var(--primary);
+}
+
+.w3-round {
+  color: white;
+  font-weight: bold;
+}
+
+/* For devices with a maximum width of 767px (typical for mobile phones) */
+@media only screen and (max-width: 767px) {
+  /* Your CSS styles for mobile devices go here */
+  /* Example: Adjust font size and padding */
+  .hero-section {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .metric {
+    height: 80px;
+  }
+  .question-section {
+    margin-top: 5vh;
+  }
+  .detail-form {
+    width: 98vw;
+    margin-top: 3vw;
+  }
+  .detail-form .question-heading {
+    font-size: 1.5rem;
+  }
+
+  .detail-form #question {
+    font-size: 1.1rem;
+  }
+  .submit-btn {
+    width: 98vw;
+  }
+}
